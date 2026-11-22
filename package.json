@@ -1,0 +1,11 @@
+{
+  "name": "usual",
+  "version": "1.0.0",
+  "description": "Order the usual: keeps your details, the people you order for, your places and your regular orders, and makes ordering quick (what to say on the phone, every detail ready to copy for websites, a filler for checkout pages). Rocco the raccoon knows where the good food is.",
+  "bin": { "usual": "bin/usual.js" },
+  "scripts": { "test": "node --test" },
+  "engines": { "node": ">=18" },
+  "license": "MIT",
+  "repository": "github:dpatel7-dev/usual",
+  "files": ["bin", "src", "web", "assets", "install.sh", "install.ps1", "README.md", "CHANGELOG.md"]
+}

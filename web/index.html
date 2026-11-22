@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>usual</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="usual.css">
+</head>
+<body>
+<header class="street">
+  <canvas id="street" aria-hidden="true"></canvas>
+</header>
+
+<nav class="bar" aria-label="usual">
+  <span class="mark"><canvas id="face" width="12" height="9" aria-hidden="true"></canvas>usual</span>
+  <div class="tabs" role="tablist">
+    <button role="tab" data-tab="usuals" aria-selected="true">Usuals</button>
+    <button role="tab" data-tab="places">Places</button>
+    <button role="tab" data-tab="people">People</button>
+    <button role="tab" data-tab="history">History</button>
+    <button role="tab" data-tab="you">You</button>
+  </div>
+  <span class="sp"></span>
+  <button class="quiet" id="lockNow" hidden title="Lock usual now">Lock</button>
+</nav>
+
+<main id="main" tabindex="-1"></main>
+
+<div class="sheet-wrap" id="sheetWrap" hidden>
+  <div class="scrim" data-act="sheet-close"></div>
+  <aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></aside>
+</div>
+
+<div class="locked" id="locked" hidden>
+  <canvas id="lockRocco" width="26" height="17" aria-hidden="true"></canvas>
+  <h1>usual is locked</h1>
+  <p id="lockWhy">Your details stay hidden until your Mac checks it's you.</p>
+  <button class="go" id="unlockBtn">Unlock with Touch ID</button>
+  <p class="small" id="lockNote"></p>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script id="config" type="application/json">__CONFIG__</script>
+<script src="scene.js"></script>
+<script src="street.js"></script>
+<script src="usual.js"></script>
+</body>
+</html>
