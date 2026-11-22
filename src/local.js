@@ -10,6 +10,7 @@
 
 const fs = require('fs');
 const http = require('http');
+const Look = require('./look');
 const path = require('path');
 const crypto = require('crypto');
 
@@ -24,7 +25,7 @@ function secretIn(file) {
   return s;
 }
 
-function serve({ port = 0, secret, web, config = () => ({}), api, raw, onListen, header = 'x-app-secret', referrer = 'no-referrer' }) {
+function serve({ port = 0, secret, web, config = () => ({}), api, raw, outside, onListen, header = 'x-app-secret', referrer = 'no-referrer' }) {
   const base = `/${secret}`;
   const server = http.createServer(async (req, res) => {
     const addr = server.address();
@@ -37,8 +38,13 @@ function serve({ port = 0, secret, web, config = () => ({}), api, raw, onListen,
       res.end(data);
     };
     if (url.pathname === '/ping') return send(200, { ok: true });
+    // a few addresses outside the secret one, for helpers that pair first (they bring their own key)
+    if (outside) {
+      try { if (await outside(req, res, url, send)) return; } catch (e) { return send(e.status || 500, { error: e.message || 'Something went wrong.' }); }
+    }
     if (!url.pathname.startsWith(base + '/') && url.pathname !== base) return send(404, { error: 'not here' });
     const rest = url.pathname.slice(base.length) || '/';
+    if (rest === '/__look') return send(200, { look: Look.read() }); // light or dark, set in pca
     try {
       if (raw && (await raw(req, res, rest, url, send))) return;
       if (rest.startsWith('/api/')) {
@@ -59,7 +65,7 @@ function serve({ port = 0, secret, web, config = () => ({}), api, raw, onListen,
       let data = fs.readFileSync(full);
       if (full.endsWith('.html')) {
         const conf = JSON.stringify({ ...config(req, url), secret, base }).replace(/</g, '\\u003c');
-        data = Buffer.from(data.toString('utf8').replace('__CONFIG__', conf));
+        data = Buffer.from(Look.inject(data.toString('utf8').replace('__CONFIG__', conf), Look.read(), `${base}/__look`));
       }
       return send(200, data, TYPES[path.extname(full)] || 'application/octet-stream');
     } catch (e) {

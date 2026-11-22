@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.0
+- **Light or dark, set once for every app:** press **L** in pca (or `pca look light`, `pca look dark`, `pca look auto`). usual's window follows it.
+
 ## 1.0.0
 - usual keeps your details (name, phone, email, addresses), the people you order for, the places you order from, and your usual orders.
 - Each usual prints as a receipt: what you get, the tax, delivery fee and tip, the total, and what each person owes.
